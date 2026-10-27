@@ -1,0 +1,19 @@
+services:
+  calculator:
+    build: .                    # build the image from the Dockerfile here
+    ports:
+      - "5000:5000"
+    volumes:
+      - calc-data:/data         # history.txt is written here
+
+  history:
+    image: nginx                # ready-made web server, no code
+    ports:
+      - "8080:80"
+    volumes:
+      - calc-data:/usr/share/nginx/html:ro   # same volume, read-only
+    depends_on:
+      - calculator
+
+volumes:
+  calc-data:
